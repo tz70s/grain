@@ -1,0 +1,21 @@
+{
+  "name": "edge-compose",
+  "version": "0.1.0",
+  "description": "Compose your distributed applications in IoT environment",
+  "main": "App.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "IoT",
+    "actor"
+  ],
+  "author": "Tzu-Chiao Yeh",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "uuid": "^3.2.1"
+  }
+}
