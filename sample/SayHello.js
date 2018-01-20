@@ -20,19 +20,22 @@ const ActorSystem = require('../lib/ActorSystem');
 const AbstractActor = require('../lib/Actor');
 
 class SayHelloActor extends AbstractActor {
+
     constructor() {
         super('say-hello-actor0');
         this.state = {};
         this.state.number = 0;
     }
-    recvFn(envelope) {
-        console.log(envelope);
+
+    recveive(envelope) {
+        console.log(envelope.content);
         console.log(this.state.number++);
+        this.tell('debugger0', 'Hi, Debugger!');
     }
 }
 
 let actorSystem = new ActorSystem();
-actorSystem._registry.addMirrorActor({address: '127.0.0.1', port: 6773}, 'debugger0');
+actorSystem._registry.addMirrorActor('debugger-system', 'debugger0');
+actorSystem._postman.handShake('127.0.0.1', 6773);
 actorSystem.create(new SayHelloActor())
-    .tell('say-hello-actor0', 'Hello world!')
-    .tell('debugger0', 'Hi, Debugger!');
+    .tell('say-hello-actor0', 'Hello world!');

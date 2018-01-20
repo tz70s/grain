@@ -26,14 +26,14 @@ class StateMachineActor extends AbstractActor {
         this.state.number = 0;
     }
 
-    recvFn(envelope) {
-        console.log(envelope);
+    receive(envelope) {
+        console.log(envelope.content);
         console.log(++this.state.number);
-        this.next(this.anotherRecvFn);
+        this.roll(this.anotherReceive);
     }
 
-    anotherRecvFn(envelope) {
-        console.log(`Another receive! ${envelope}`);
+    anotherReceive(envelope) {
+        console.log(`Another receive! ${envelope.content}`);
         this.state.number += 2;
         console.log(this.state.number);
         this.rollBack();

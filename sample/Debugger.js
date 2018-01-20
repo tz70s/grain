@@ -23,10 +23,11 @@ class DebuggerActor extends AbstractActor {
     constructor(name) {
         super('debugger0');
     }
-    recvFn(envelope) {
-        console.log(envelope);
+    receive(envelope) {
+        console.log(envelope.content);
+        this.tell(envelope.from, `Hi! ${envelope.from}, this is a reply`);
     }
 }
 
-let actorSystem = new ActorSystem(6773);
+let actorSystem = new ActorSystem('debugger-system', 6773);
 actorSystem.create(new DebuggerActor());
