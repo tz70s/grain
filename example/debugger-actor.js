@@ -16,15 +16,19 @@
 
 'use strict';
 
-class Envelope {
+const ActorSystem = require('../lib/actor-system');
+const AbstractActor = require('../lib/actor');
+const Neighbor = require('../lib/neighbor');
 
-    constructor(address, content) {
-        this.from = null;
-        this.address = address;
-        this.content = content;
-        // Default is not to guarantee transferring
-        this.guarantee = false;
+class DebuggerActor extends AbstractActor {
+    constructor(name) {
+        super('debugger0');
+    }
+    receive(envelope) {
+        console.log(envelope.content);
     }
 }
 
-module.exports = Envelope;
+let neighbors = [new Neighbor('127.0.0.1', 6772, 11000)];
+let actorSystem = new ActorSystem('127.0.0.1:6773', 11001, neighbors);
+actorSystem.create(new DebuggerActor());

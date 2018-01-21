@@ -16,26 +16,32 @@
 
 'use strict';
 
-const ActorSystem = require('../lib/ActorSystem');
-const AbstractActor = require('../lib/Actor');
+const ActorSystem = require('../lib/actor-system');
+const AbstractActor = require('../lib/actor');
 
-class SayHelloActor extends AbstractActor {
-
+class StateMachineActor extends AbstractActor {
     constructor() {
-        super('say-hello-actor0');
+        super('StateMachineActor');
         this.state = {};
         this.state.number = 0;
     }
 
-    recveive(envelope) {
+    receive(envelope) {
         console.log(envelope.content);
-        console.log(this.state.number++);
-        this.tell('debugger0', 'Hi, Debugger!');
+        console.log(++this.state.number);
+        this.roll(this.anotherReceive);
+    }
+
+    anotherReceive(envelope) {
+        console.log(`Another receive! ${envelope.content}`);
+        this.state.number += 2;
+        console.log(this.state.number);
+        this.rollBack();
     }
 }
 
-let actorSystem = new ActorSystem();
-actorSystem._registry.addMirrorActor('debugger-system', 'debugger0');
-actorSystem._postman.handShake('127.0.0.1', 6773);
-actorSystem.create(new SayHelloActor())
-    .tell('say-hello-actor0', 'Hello world!');
+let actorSystem = new ActorSystem('127.0.0.1:6772');
+actorSystem.create(new StateMachineActor())
+    .tell('StateMachineActor', 'Hi state machine!')
+    .tell('StateMachineActor', 'Hello state machine, another call!')
+    .tell('StateMachineActor', 'Hi state machine, third call!');

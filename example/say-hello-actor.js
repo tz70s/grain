@@ -16,18 +16,26 @@
 
 'use strict';
 
-const ActorSystem = require('../lib/ActorSystem');
-const AbstractActor = require('../lib/Actor');
+const ActorSystem = require('../lib/actor-system');
+const AbstractActor = require('../lib/actor');
+const Neighbor = require('../lib/neighbor');
 
-class DebuggerActor extends AbstractActor {
-    constructor(name) {
-        super('debugger0');
+class SayHelloActor extends AbstractActor {
+
+    constructor() {
+        super('say-hello-actor0');
+        this.state = {};
+        this.state.number = 0;
     }
+
     receive(envelope) {
         console.log(envelope.content);
-        this.tell(envelope.from, `Hi! ${envelope.from}, this is a reply`);
+        console.log(this.state.number++);
+        this.tell('debugger0', 'Hi, Debugger!');
     }
 }
 
-let actorSystem = new ActorSystem('debugger-system', 6773);
-actorSystem.create(new DebuggerActor());
+let neighbors = [new Neighbor('127.0.0.1', 6773, 11001)];
+let actorSystem = new ActorSystem('127.0.0.1:6772', 11000, neighbors);
+actorSystem.create(new SayHelloActor())
+    .tell('say-hello-actor0', 'Hello world!');

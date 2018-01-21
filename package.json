@@ -16,6 +16,8 @@
   "author": "Tzu-Chiao Yeh",
   "license": "Apache-2.0",
   "dependencies": {
-    "uuid": "^3.2.1"
+    "coap": "^0.21.0",
+    "node-serialize": "0.0.4",
+    "swim": "^0.5.0"
   }
 }
