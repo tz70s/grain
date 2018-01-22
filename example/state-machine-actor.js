@@ -18,30 +18,33 @@
 
 const ActorSystem = require('../lib/actor-system');
 const AbstractActor = require('../lib/actor');
+const TimerActor = require('../lib/spec/timer-actor');
 
 class StateMachineActor extends AbstractActor {
+
     constructor() {
         super('StateMachineActor');
         this.state = {};
         this.state.number = 0;
     }
 
-    receive(envelope) {
-        console.log(envelope.content);
-        console.log(++this.state.number);
-        this.roll(this.anotherReceive);
-    }
-
-    anotherReceive(envelope) {
-        console.log(`Another receive! ${envelope.content}`);
-        this.state.number += 2;
-        console.log(this.state.number);
-        this.rollBack();
+    builder() {
+        return {
+            _ : (self, envelope) => {
+                self.state.number++;
+                console.log(`Step1, state ${self.state.number}`);
+                self.roll('$');
+            },
+            $ : (self, envelope) => {
+                self.state.number += 2;
+                console.log(`Step2, state ${self.state.number}`);
+                self.roll();
+            }
+        }
     }
 }
 
-let actorSystem = new ActorSystem('127.0.0.1:6772');
-actorSystem.create(new StateMachineActor())
-    .tell('StateMachineActor', 'Hi state machine!')
-    .tell('StateMachineActor', 'Hello state machine, another call!')
-    .tell('StateMachineActor', 'Hi state machine, third call!');
+let actorSystem = new ActorSystem()
+    .create(new StateMachineActor())
+    .create(new TimerActor('timer0', 'StateMachineActor', 1000))
+    .tell('timer0');
