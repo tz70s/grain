@@ -18,34 +18,42 @@
 
 const ActorSystem = require('../lib/actor-system');
 const AbstractActor = require('../lib/actor');
-const TimerActor = require('../lib/spec/timer-actor');
 const Neighbor = require('../lib/cluster/neighbor');
 
-class StateMachineActor extends AbstractActor {
-
+class ExternalLib {
     constructor() {
-        super('StateMachineActor');
-        this.state = {};
-        this.state.number = 0;
+        this.lib = 'external';
+        this.version = 1;
+    }
+
+    showInfo() {
+        console.log(`${this.lib}, version ${this.version}`);
+    }
+
+    updateVersion(version) {
+        this.version = version;
+    }
+}
+
+class DependentActor extends AbstractActor {
+    constructor() {
+        super('dependent0');
+        this.externalLib = new ExternalLib();
     }
 
     builder() {
         return {
             _ : (self, envelope) => {
-                self.state.number++;
-                console.log(`Step1, state ${self.state.number}`);
-                self.roll('$');
-            },
-            $ : (self, envelope) => {
-                self.state.number += 2;
-                console.log(`Step2, state ${self.state.number}`);
-                self.roll();
+                console.log('Hello!');
+                console.log(self.externalLib);
+                console.log(`Reveal external lib, info : ${self.externalLib.showInfo()}`);
+                self.updateVersion(2);
+                console.log(`Update, info : ${self.externalLib.showInfo()}`);
             }
         }
     }
 }
 
 let actorSystem = new ActorSystem([new Neighbor('127.0.0.1', 6772, 11001)])
-    .create(new StateMachineActor())
-    .create(new TimerActor('timer0', 'StateMachineActor', 1000))
-    .tell('timer0', null, { host: '127.0.0.1', port: 6772 });
+    .create(new DependentActor())
+    .tell('dependent0', null, { host: '127.0.0.1', port: 6772 });

@@ -16,19 +16,18 @@
 
 'use strict';
 
-const ActorSystem = require('../lib/actor-system');
 const AbstractActor = require('../lib/actor');
-const Neighbor = require('../lib/neighbor');
 
 class DebuggerActor extends AbstractActor {
     constructor(name) {
         super('debugger0');
     }
-    receive(envelope) {
-        console.log(envelope.content);
+
+    builder() {
+        return {
+            _ : (self, envelope) => {
+                console.log(`${self.name} : ${envelope.content}`);
+            }
+        }
     }
 }
-
-let neighbors = [new Neighbor('127.0.0.1', 6772, 11000)];
-let actorSystem = new ActorSystem('127.0.0.1:6773', 11001, neighbors);
-actorSystem.create(new DebuggerActor());
