@@ -23,11 +23,9 @@ class DebuggerActor extends AbstractActor {
         super('debugger0');
     }
 
-    builder() {
-        return {
-            _ : (self, envelope) => {
-                console.log(`${self.name} : ${envelope.content}`);
-            }
-        }
+    receive(envelope) {
+        console.log(`${this.name} : ${envelope.content}`);
     }
 }
+
+module.exports = DebuggerActor;

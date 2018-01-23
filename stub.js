@@ -16,9 +16,9 @@
 
 'use strict';
 
-module.exports = {
-    path : {
-        actor: 'actor',
-        signature: 'signature'
-    }
-}
+const ActorStub = require('./lib/actor-stub');
+const { PeersFactory } = require('./lib/peer');
+
+let port = process.argv[2];
+let peers = PeersFactory(6772, 6773);
+let stub = new ActorStub({ port: port }, peers);

@@ -16,9 +16,7 @@
 
 'use strict';
 
-const ActorSystem = require('../lib/actor-system');
 const AbstractActor = require('../lib/actor');
-const Neighbor = require('../lib/cluster/neighbor');
 
 class ExternalLib {
     constructor() {
@@ -41,19 +39,9 @@ class DependentActor extends AbstractActor {
         this.externalLib = new ExternalLib();
     }
 
-    builder() {
-        return {
-            _ : (self, envelope) => {
-                console.log('Hello!');
-                console.log(self.externalLib);
-                console.log(`Reveal external lib, info : ${self.externalLib.showInfo()}`);
-                self.updateVersion(2);
-                console.log(`Update, info : ${self.externalLib.showInfo()}`);
-            }
-        }
+    receive(envelope) {
+        this.externalLib.showInfo();
     }
 }
 
-let actorSystem = new ActorSystem([new Neighbor('127.0.0.1', 6772, 11001)])
-    .create(new DependentActor())
-    .tell('dependent0', null, { host: '127.0.0.1', port: 6772 });
+module.exports = DependentActor;

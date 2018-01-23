@@ -16,27 +16,15 @@
 
 'use strict';
 
-const AbstractActor = require('../lib/actor');
+const ActorStub = require('../lib/actor-stub');
+const { PeersFactory } = require('../lib/builder/peer');
 
-class StateMachineActor extends AbstractActor {
+let peers = PeersFactory(6772, 6773);
+let stub = new ActorStub({ port: 6772 }, peers);
 
-    constructor() {
-        super('StateMachineActor');
-        this.state = {};
-        this.state.number = 0;
-    }
-
-    receive(envelope) {
-        this.state.number++;
-        console.log(`Step1, state ${this.state.number}`);
-        this.roll(this.another);
-    }
-
-    another(envelope) {
-        this.state.number += 2;
-        console.log(`Step2, state ${this.state.number}`);
-        this.rollback();
-    }
-}
-
-module.exports = StateMachineActor;
+stub.actorOf('hello-actor-123').then((res) => { 
+  let constructor = res;
+  let object = new constructor();
+  object._name = 'hello-actor-123'
+  object.receive({ content: 'Hello world!' });
+});

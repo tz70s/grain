@@ -1,5 +1,5 @@
 {
-  "name": "edge-compose",
+  "name": "grain",
   "version": "0.1.0",
   "description": "Compose your distributed applications in IoT environment",
   "main": "App.js",
@@ -16,8 +16,6 @@
   "author": "Tzu-Chiao Yeh",
   "license": "Apache-2.0",
   "dependencies": {
-    "coap": "^0.21.0",
-    "serialize-javascript": "^1.4.0",
-    "swim": "^0.5.0"
+    "upring": "^0.22.0"
   }
 }

@@ -16,6 +16,12 @@
 
 'use strict';
 
-const ActorStub = require('./lib/actor-stub');
+const ActorSystem = require('../lib/actor-system');
+const { PeersFactory } = require('../lib/builder/peer');
 
-let stub = new ActorStub({ host: '127.0.0.1', port: 6772, failureDetectorPort: 11001 });
+let peers = PeersFactory(6772, 6773);
+let actorSystem = new ActorSystem({ port: 6773 }, peers);
+
+actorSystem.actorOf('hello-actor-123', __dirname + '/../example/debugger-actor.js', 0.1)
+  .then((name) => { })
+  .catch((error) => { console.error(error); });

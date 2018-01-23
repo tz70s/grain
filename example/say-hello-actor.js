@@ -26,13 +26,11 @@ class SayHelloActor extends AbstractActor {
         this.state.number = 0;
     }
 
-    builder() {
-        return {
-            _ : (self, envelope) => {
-                console.log(envelope.content);
-                console.log(self.state.number++);
-                self.tell('debugger0', 'Hi, Debugger!');
-            }
-        }
+    receive(envelope) {
+        console.log(envelope.content);
+        console.log(this.state.number++);
+        this.tell('debugger0', 'Hi, Debugger!');
     }
 }
+
+module.exports = SayHelloActor;

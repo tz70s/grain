@@ -16,14 +16,9 @@
 
 'use strict';
 
-class Envelope {
+const ActorSystem = require('./lib/actor-system');
+const { PeersFactory } = require('./lib/peer');
 
-    constructor(from, address, content, guarantee = false) {
-        this.from = from;
-        this.address = address;
-        this.content = content;
-        this.guarantee = guarantee;
-    }
-}
-
-module.exports = Envelope;
+let port = process.argv[2];
+let peers = PeersFactory(6772, 6773);
+let actorSystem = new ActorSystem({ port: port }, peers);
