@@ -16,6 +16,7 @@
   "author": "Tzu-Chiao Yeh",
   "license": "Apache-2.0",
   "dependencies": {
-    "upring": "^0.22.0"
+    "upring": "^0.22.0",
+    "upring-pubsub": "^0.3.0"
   }
 }

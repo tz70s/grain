@@ -17,14 +17,11 @@
 'use strict';
 
 const ActorStub = require('../lib/actor-stub');
-const { PeersFactory } = require('../lib/builder/peer');
+const { PeersFactory } = require('../lib/meta/peer');
 
 let peers = PeersFactory(6772, 6773);
 let stub = new ActorStub({ port: 6772 }, peers);
 
-stub.actorOf('hello-actor-123').then((res) => { 
-  let constructor = res;
-  let object = new constructor();
-  object._name = 'hello-actor-123'
-  object.receive({ content: 'Hello world!' });
-});
+stub.actorOf('hello-actor-123').then((res) => {
+  res.recv0( { content: 'Hello World!' });
+}).catch((err) => console.error(err));

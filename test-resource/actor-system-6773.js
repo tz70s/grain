@@ -17,7 +17,7 @@
 'use strict';
 
 const ActorSystem = require('../lib/actor-system');
-const { PeersFactory } = require('../lib/builder/peer');
+const { PeersFactory } = require('../lib/meta/peer');
 
 let peers = PeersFactory(6772, 6773);
 let actorSystem = new ActorSystem({ port: 6773 }, peers);
