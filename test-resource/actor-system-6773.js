@@ -23,5 +23,7 @@ let peers = PeersFactory(6772, 6773);
 let actorSystem = new ActorSystem({ port: 6773 }, peers);
 
 actorSystem.actorOf('hello-actor-123', __dirname + '/../example/debugger-actor.js', 0.1)
-  .then((name) => { })
+  .then((name) => { 
+    actorSystem.tell('10.43.244.224:6772', 'Hello message passing!');
+  })
   .catch((error) => { console.error(error); });
