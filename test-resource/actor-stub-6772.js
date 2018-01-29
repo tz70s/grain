@@ -17,7 +17,7 @@
 'use strict';
 
 const ActorStub = require('../lib/actor-stub');
-const { PeersFactory } = require('../lib/meta/peer');
+const { PeersFactory } = require('../lib/peer');
 
 let peers = PeersFactory(6772, 6773);
 let stub = new ActorStub({ port: 6772 }, peers);
