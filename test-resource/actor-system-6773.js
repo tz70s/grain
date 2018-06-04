@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Dependable Network and System Lab, National Taiwan University.
+ * Copyright (c) 2018 Tzu-Chiao Yeh.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ let peers = PeersFactory(6772, 6773);
 let actorSystem = new ActorSystem({ port: 6773 }, peers);
 
 actorSystem.actorOf('hello-actor-123', __dirname + '/../example/debugger-actor.js', 0.1)
-  .then((name) => { 
+  .then((name) => {
     actorSystem.tell('10.43.244.224:6772', 'Hello message passing!');
   })
   .catch((error) => { console.error(error); });

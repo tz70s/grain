@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Dependable Network and System Lab, National Taiwan University.
+ * Copyright (c) 2018 Tzu-Chiao Yeh.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,5 +23,5 @@ let peers = PeersFactory(6772, 6773);
 let stub = new ActorStub({ port: 6772 }, peers);
 
 stub.actorOf('hello-actor-123').then((res) => {
-  res.recv0( { content: 'Hello World!' });
+  res.recv0({ content: 'Hello World!' });
 }).catch((err) => console.error(err));
